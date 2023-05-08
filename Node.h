@@ -10,7 +10,7 @@ struct Node {
     Node<T> *right;
 
     // Construtor
-    Node (int key, Node<T> *left = nullptr, Node<T> *right = nullptr, int height = 1)
+    Node (T key, Node<T> *left = nullptr, Node<T> *right = nullptr, int height = 1)
         : key(key), height(height), left(left), right(right) {}
         
 };

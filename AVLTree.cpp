@@ -2,6 +2,7 @@
 #include <vector>
 #include "node.h"
 #include "AVLTree.h"
+#include "Data.h"
 using namespace std;
 
 // retorna a altura do nó.
@@ -19,7 +20,7 @@ int avl_tree<T>::balance(Node<T> *node) {
 
 template <typename T>
 Node<T>* avl_tree<T>::rightRotation(Node<T> *p) {
-    Node *u = p->left;
+    Node<T> *u = p->left;
     p->left = u->right;
     u->right = p;
     // recalcular as alturas de p e de u
@@ -30,7 +31,7 @@ Node<T>* avl_tree<T>::rightRotation(Node<T> *p) {
 
 template <typename T>
 Node<T>* avl_tree<T>::leftRotation(Node<T> *p) {
-    Node *u = p->right;
+    Node<T> *u = p->right;
     p->right = u->left;
     u->left = p;
     // recalcular as alturas de p e de u
@@ -42,7 +43,7 @@ Node<T>* avl_tree<T>::leftRotation(Node<T> *p) {
 // função pública que recebe uma chave e a insere
 // somente se ela não for repetida
 template <typename T>
-void avl_tree<T>::add(int key) {
+void avl_tree<T>::add(T key) {
     root = add(root, key);
 }
 
@@ -50,9 +51,9 @@ void avl_tree<T>::add(int key) {
 // e uma chave e insere a chave na tree se e somente se 
 // ela nao for repetida. Claro, tem que deixar AVL novamente
 template <typename T>
-Node<T>* avl_tree<T>::add(Node<T> *p, int key) {
+Node<T>* avl_tree<T>::add(Node<T> *p, T key) {
     if(p == nullptr)
-        return new Node(key);
+        return new Node<T>(key);
     if(key == p->key) 
         return p;
     if(key < p->key)
@@ -66,7 +67,7 @@ Node<T>* avl_tree<T>::add(Node<T> *p, int key) {
 }
 
 template <typename T>
-Node<T>* avl_tree<T>::fixup_node(Node<T> *p, int key) {
+Node<T>* avl_tree<T>::fixup_node(Node<T> *p, T key) {
     // recalcula a altura de p
     p->height = 1 + max(height(p->left),height(p->right));
 
@@ -137,12 +138,12 @@ void avl_tree<T>::bshow(Node<T> *node, std::string heranca) const {
 }
 
 template <typename T>
-void avl_tree<T>::remove(int key) {
+void avl_tree<T>::remove(T key) {
     root = remove(root, key);
 }
 
 template <typename T>
-Node<T>* avl_tree<T>::remove(Node<T> *node, int key) {
+Node<T>* avl_tree<T>::remove(Node<T> *node, T key) {
     if(node == nullptr) // node nao encontrado
         return nullptr; /*L\pauseL*/
     if(key < node->key) 
@@ -151,7 +152,7 @@ Node<T>* avl_tree<T>::remove(Node<T> *node, int key) {
         node->right = remove(node->right, key); /*L\pauseL*/
     // encontramos no node
     else if(node->right == nullptr) { // sem filho direito
-        Node *child = node->left;
+        Node<T> *child = node->left;
         delete node;
         return child;
     }
@@ -169,7 +170,7 @@ Node<T>* avl_tree<T>::remove_successor(Node<T> *root, Node<T> *node) {
         node->left = remove_successor(root, node->left);
     else {
         root->key = node->key;
-        Node *aux = node->right;
+        Node<T> *aux = node->right;
         delete node;
         return aux;
     }
@@ -209,7 +210,7 @@ Node<T>* clone_rec(Node<T> *node) {
     if(node == nullptr)
         return nullptr;
     else {
-        Node *aux = new Node(node->key);
+        Node<T> *aux = new Node<T>(node->key);
         aux->left = clone_rec(node->left);
         aux->right = clone_rec(node->right);
         return aux;
@@ -263,20 +264,6 @@ void inorder_rec(Node<T> *node, std::vector<int>& v) {
     }
 }
 
-// Cria uma arvore binaria de busca completa a partir de um vetor de chaves ordenado.
-// Recebe como entrada o vetor, o indice inicial e o indice final do vetor
-template <typename T>
-Node<T>* build_complete_tree(const vector<int>& v, int l, int r) {
-    if(l <= r) {
-        int m = (l+r)/2;
-        Node *aux = new Node(v[m]);
-        aux->left = build_complete_tree(v,l,m-1);
-        aux->right = build_complete_tree(v,m+1,r);
-        return aux;
-    }
-    return nullptr;
-}
-
 // funcao que recebe o ponteiro para a raiz de uma arvore com K nodes e ajusta o
 // campo height de todos os K nodes dessa arvore.
 // Complexidade: O(K)
@@ -289,3 +276,7 @@ int height_rec(Node<T> *node) {
         return node->height;
     }
 }
+
+template class avl_tree<int>;
+template class avl_tree<string>;
+template class avl_tree<Date>;
