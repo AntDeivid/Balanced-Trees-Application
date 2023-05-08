@@ -4,7 +4,7 @@
 #include <string>
 #include "Node.h"
 
-
+template <typename T>
 class avl_tree { 
 public:
     avl_tree() = default;
@@ -13,29 +13,24 @@ public:
     int height() const;
     void bshow() const;
     ~avl_tree();
-
-    avl_tree* intercala(const avl_tree& t);
-
-    virtual void add(int key);
-    virtual void clear();
-    virtual void remove(int key);
-    virtual void access_keys_inorder(void (*f)(int& key)); 
-    virtual void keys_as_vector(std::vector<int>& v) const;
+    void add(int key);
+    void clear();
+    void remove(int key);
 
 private:
-    Node *root {nullptr};
+    Node<T> *root {nullptr};
 
-    int height(Node *node);
-    int balance(Node *node);
-    void bshow(Node *node, std::string heranca) const;
-    Node* rightRotation(Node *p);
-    Node* leftRotation(Node *p);
-    Node* add(Node *p, int key);
-    Node* fixup_node(Node *p, int key);
-    Node* clear(Node *node);
-    Node* remove(Node *node, int key);
-    Node* remove_successor(Node *root, Node *node);
-    Node* fixup_deletion(Node *node);
+    int height(Node<T> *node);
+    int balance(Node<T> *node);
+    void bshow(Node<T> *node, std::string heranca) const;
+    Node<T>* rightRotation(Node<T> *p);
+    Node<T>* leftRotation(Node<T> *p);
+    Node<T>* add(Node<T> *p, int key);
+    Node<T>* fixup_node(Node<T> *p, int key);
+    Node<T>* clear(Node<T> *node);
+    Node<T>* remove(Node<T> *node, int key);
+    Node<T>* remove_successor(Node<T> *root, Node<T> *node);
+    Node<T>* fixup_deletion(Node<T> *node);
 };
 
 #endif

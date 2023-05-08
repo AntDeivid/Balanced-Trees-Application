@@ -7,15 +7,18 @@ using namespace std;
 // retorna a altura do nó.
 // se a arvore for vazia ela tem altura 0
 // caso contrario, retorna o valor que está no campo height
-int avl_tree::height(Node *node) {
+template <typename T>
+int avl_tree<T>::height(Node<T> *node) {
     return (node == nullptr) ? 0 : node->height;
 }
 
-int avl_tree::balance(Node *node) {
+template <typename T>
+int avl_tree<T>::balance(Node<T> *node) {
     return height(node->right) - height(node->left);
 }
 
-Node* avl_tree::rightRotation(Node *p) {
+template <typename T>
+Node<T>* avl_tree<T>::rightRotation(Node<T> *p) {
     Node *u = p->left;
     p->left = u->right;
     u->right = p;
@@ -25,7 +28,8 @@ Node* avl_tree::rightRotation(Node *p) {
     return u;
 }
 
-Node* avl_tree::leftRotation(Node *p) {
+template <typename T>
+Node<T>* avl_tree<T>::leftRotation(Node<T> *p) {
     Node *u = p->right;
     p->right = u->left;
     u->left = p;
@@ -37,14 +41,16 @@ Node* avl_tree::leftRotation(Node *p) {
 
 // função pública que recebe uma chave e a insere
 // somente se ela não for repetida
-void avl_tree::add(int key) {
+template <typename T>
+void avl_tree<T>::add(int key) {
     root = add(root, key);
 }
 
 // função recursiva privada que recebe uma raiz de arvore
 // e uma chave e insere a chave na tree se e somente se 
 // ela nao for repetida. Claro, tem que deixar AVL novamente
-Node* avl_tree::add(Node *p, int key) {
+template <typename T>
+Node<T>* avl_tree<T>::add(Node<T> *p, int key) {
     if(p == nullptr)
         return new Node(key);
     if(key == p->key) 
@@ -59,7 +65,8 @@ Node* avl_tree::add(Node *p, int key) {
     return p;
 }
 
-Node* avl_tree::fixup_node(Node *p, int key) {
+template <typename T>
+Node<T>* avl_tree<T>::fixup_node(Node<T> *p, int key) {
     // recalcula a altura de p
     p->height = 1 + max(height(p->left),height(p->right));
 
@@ -87,11 +94,13 @@ Node* avl_tree::fixup_node(Node *p, int key) {
     return p;
 }
 
-void avl_tree::clear() {
+template <typename T>
+void avl_tree<T>::clear() {
     root = clear(root);
 }
 
-Node *avl_tree::clear(Node *node) {
+template <typename T>
+Node<T> *avl_tree<T>::clear(Node<T> *node) {
     if(node != nullptr) {
         node->left = clear(node->left);
         node->right = clear(node->right);
@@ -100,15 +109,18 @@ Node *avl_tree::clear(Node *node) {
     return nullptr;
 }
 
-avl_tree::~avl_tree() {
+template <typename T>
+avl_tree<T>::~avl_tree() {
     clear();
 }
 
-void avl_tree::bshow() const {
+template <typename T>
+void avl_tree<T>::bshow() const {
     bshow(root, "");
 }
 
-void avl_tree::bshow(Node *node, std::string heranca) const {
+template <typename T>
+void avl_tree<T>::bshow(Node<T> *node, std::string heranca) const {
     if(node != nullptr && (node->left != nullptr || node->right != nullptr))
         bshow(node->right , heranca + "r");
     for(int i = 0; i < (int) heranca.size() - 1; i++)
@@ -124,11 +136,13 @@ void avl_tree::bshow(Node *node, std::string heranca) const {
         bshow(node->left, heranca + "l");
 }
 
-void avl_tree::remove(int key) {
+template <typename T>
+void avl_tree<T>::remove(int key) {
     root = remove(root, key);
 }
 
-Node* avl_tree::remove(Node *node, int key) {
+template <typename T>
+Node<T>* avl_tree<T>::remove(Node<T> *node, int key) {
     if(node == nullptr) // node nao encontrado
         return nullptr; /*L\pauseL*/
     if(key < node->key) 
@@ -149,7 +163,8 @@ Node* avl_tree::remove(Node *node, int key) {
     return node;
 }
 
-Node* avl_tree::remove_successor(Node *root, Node *node) {
+template <typename T>
+Node<T>* avl_tree<T>::remove_successor(Node<T> *root, Node<T> *node) {
     if(node->left != nullptr)
         node->left = remove_successor(root, node->left);
     else {
@@ -163,7 +178,8 @@ Node* avl_tree::remove_successor(Node *root, Node *node) {
     return node;
 }
 
-Node* avl_tree::fixup_deletion(Node *node) {
+template <typename T>
+Node<T>* avl_tree<T>::fixup_deletion(Node<T> *node) {
     node->height = 1 + max(height(node->left),height(node->right));
 
     int bal = balance(node);
@@ -188,7 +204,8 @@ Node* avl_tree::fixup_deletion(Node *node) {
 
 // Recebe um ponteiro para a raiz de uma arvore
 // e retorna o ponteiro para o clone dessa arvore
-Node* clone_rec(Node *node) {
+template <typename T>
+Node<T>* clone_rec(Node<T> *node) {
     if(node == nullptr)
         return nullptr;
     else {
@@ -202,12 +219,14 @@ Node* clone_rec(Node *node) {
 // construtor de copia
 // recebe uma avl_tree como parâmetro e cria um clone dessa 
 // arvore e faz a minha arvore ser esse clone
-avl_tree::avl_tree(const avl_tree& t) {
+template <typename T>
+avl_tree<T>::avl_tree(const avl_tree& t) {
     this->root = clone_rec(t.root);
 }
 
 // sobrecarga do operador de atribuicao
-avl_tree& avl_tree::operator=(const avl_tree& t)  {
+template <typename T>
+avl_tree<T>& avl_tree<T>::operator=(const avl_tree& t)  {
     if(this != &t) {
         clear();
         this->root = clone_rec(t.root);
@@ -218,7 +237,8 @@ avl_tree& avl_tree::operator=(const avl_tree& t)  {
 // percurso em ordem simetrica que percorre os nodes
 // executando a funcao f nas chaves dos nodes
 // f eh um ponteiro para uma funcao
-void inorder_rec(Node *node, void (*f)(int& key)) {
+template <typename T>
+void inorder_rec(Node<T> *node, void (*f)(int& key)) {
     if(node != nullptr) {
         inorder_rec(node->left, f);
         f(node->key);
@@ -226,20 +246,16 @@ void inorder_rec(Node *node, void (*f)(int& key)) {
     }
 }
 
-// acessa as chaves da arvore em ordem simetrica
-// executando a funcao f em todas as chaves 
-void avl_tree::access_keys_inorder(void (*f)(int& key)) {
-    inorder_rec(root, f);
-}
-
-int avl_tree::height() const {
+template <typename T>
+int avl_tree<T>::height() const {
     return root->height;
 }
 
 // recebe como parametros a raiz de uma arvore e um vetor
 // e percorre a arvore em ordem simetrica preenchendo o vetor
 // com as chaves encontradas
-void inorder_rec(Node *node, std::vector<int>& v) {
+template <typename T>
+void inorder_rec(Node<T> *node, std::vector<int>& v) {
     if(node != nullptr) {
         inorder_rec(node->left, v);
         v.push_back(node->key);
@@ -247,15 +263,10 @@ void inorder_rec(Node *node, std::vector<int>& v) {
     }
 }
 
-// recebe como argumento um vector e preenche esse vector
-// com as chaves da arvore em ordem crescente
-void avl_tree::keys_as_vector(std::vector<int>& v) const {
-    inorder_rec(root, v);
-}
-
 // Cria uma arvore binaria de busca completa a partir de um vetor de chaves ordenado.
 // Recebe como entrada o vetor, o indice inicial e o indice final do vetor
-Node* build_complete_tree(const vector<int>& v, int l, int r) {
+template <typename T>
+Node<T>* build_complete_tree(const vector<int>& v, int l, int r) {
     if(l <= r) {
         int m = (l+r)/2;
         Node *aux = new Node(v[m]);
@@ -266,58 +277,15 @@ Node* build_complete_tree(const vector<int>& v, int l, int r) {
     return nullptr;
 }
 
-// Recebe como entrada dois vetores v1 e v2 já ordenados e 
-// intercala as chaves de v1 e v2 em um terceiro vetor v3.
-// Ao final, v3 contem todas as chaves ordenadas.
-void merge_vector(const vector<int>& v1, const vector<int>& v2, vector<int>& v3) {
-    int i {0}, j {0};
-    while(i < v1.size() && j < v2.size()) {
-        if(v1[i] <= v2[j])
-            v3.push_back(v1[i++]);
-        else   
-            v3.push_back(v2[j++]);
-    }
-    while(i < v1.size()) v3.push_back(v1[i++]);
-    while(j < v2.size()) v3.push_back(v2[j++]);
-}
-
-// recebe um vetor ordenado e retorna true se e somente se ele tem numeros repetidos
-bool has_repeated_keys(const vector<int>& v) {
-    for(int i {0}; i < (int)v.size()-1; ++i) {
-        if(v[i] == v[i+1])
-            return true;
-    }
-    return false;
-}
-
 // funcao que recebe o ponteiro para a raiz de uma arvore com K nodes e ajusta o
 // campo height de todos os K nodes dessa arvore.
 // Complexidade: O(K)
-int height_rec(Node *node) {
+template <typename T>
+int height_rec(Node<T> *node) {
     if(node == nullptr)
         return 0;
     else {
         node->height = 1 + std::max(height_rec(node->left), height_rec(node->right));
         return node->height;
     }
-}
-
-// funcao que intercala duas arvores 
-// T1 e T2 com n e m vertices, respectivamente.
-// Essa funcao requer que as chaves das duas arvores sejam distintas.
-// Retorna um ponteiro para uma terceira arvore que eh a 
-// intercalacao de T1 e T2.
-// Essa funcao tem complexidade O(m+n).
-avl_tree* avl_tree::intercala(const avl_tree& t) {
-    vector<int> v1, v2, v;                            // O(1)
-    this->keys_as_vector(v1);                         // O(m)
-    t.keys_as_vector(v2);                             // O(n)
-    merge_vector(v1, v2, v);                          // O(m+n)
-    if(has_repeated_keys(v))                          // O(m+n)
-        throw runtime_error("chaves repetidas");      // O(1)
-    Node *r = build_complete_tree(v, 0, v.size()-1);  // O(m+n)
-    height_rec(r);                                    // O(m+n)
-    avl_tree *ptr = new avl_tree;                     // O(1)
-    ptr->root = r;                                    // O(1)
-    return ptr;                                       // O(1)
 }

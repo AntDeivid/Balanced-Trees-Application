@@ -1,15 +1,16 @@
 #ifndef NODE_H
 #define NODE_H
 
+template <typename T>
 struct Node {
     // atributos
-    int key;
+    T key;
     int height;
-    Node *left;
-    Node *right;
+    Node<T> *left;
+    Node<T> *right;
 
     // Construtor
-    Node (int key, Node *left = nullptr, Node *right = nullptr, int height = 1)
+    Node (int key, Node<T> *left = nullptr, Node<T> *right = nullptr, int height = 1)
         : key(key), height(height), left(left), right(right) {}
         
 };
