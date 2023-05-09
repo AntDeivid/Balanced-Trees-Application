@@ -35,59 +35,49 @@ class Date {
         }
 
         bool operator<(Date& data) {
-            if (this->getAno() < data.getAno()) {
-                return true;
-            } else if (this->getAno() == data.getAno()) {
-                if (this->getMes() < data.getMes()) {
-                    return true;
-                } else if (this->getMes() == data.getMes()) {
-                    if (this->getDia() < data.getDia()) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
+            if (this->getAno() < data.getAno()) { return true; }
+
+            else if (this->getAno() == data.getAno()) {
+
+                if (this->getMes() < data.getMes()) { return true; }
+
+                else if (this->getMes() == data.getMes()) {
+                    if (this->getDia() < data.getDia()) { return true; }
+                    else { return false; }
                 }
-            } else {
-                return false;
+                else { return false; }
             }
+            else { return false; }
         }
 
         bool operator>(Date& data) {
-            if (this->getAno() > data.getAno()) {
-                return true;
-            } else if (this->getAno() == data.getAno()) {
-                if (this->getMes() > data.getMes()) {
-                    return true;
-                } else if (this->getMes() == data.getMes()) {
-                    if (this->getDia() > data.getDia()) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
+            if (this->getAno() > data.getAno()) { return true; }
+
+            else if (this->getAno() == data.getAno()) {
+                if (this->getMes() > data.getMes()) { return true; }
+
+                else if (this->getMes() == data.getMes()) {
+                    if (this->getDia() > data.getDia()) { return true; }
+                    
+                    else { return false; }
                 }
-            } else {
-                return false;
+                else { return false; }
             }
+            else { return false; }
         }
 
         bool operator==(Date& data) {
             if (this->getAno() == data.getAno() && this->getMes() == data.getMes() && this->getDia() == data.getDia()) {
                 return true;
-            } else {
-                return false;
             }
+            else { return false; }
         }
 
         bool operator!=(Date& data) {
             if (this->getAno() != data.getAno() || this->getMes() != data.getMes() || this->getDia() != data.getDia()) {
                 return true;
-            } else {
-                return false;
             }
+            else { return false; }
         }
 
         friend std::ostream& operator<<(std::ostream& os, Date& data) {

@@ -24,6 +24,14 @@ void readFile(vector<Pessoa> &pessoas, string filename) {
         getline(ss, data, ',');
         getline(ss, cidade, ',');
 
+        for(int i = 0; i < cpf.size(); i++) {
+            if (cpf[i] == '.' || cpf[i] == '-') {
+                cpf.erase(i--, 1);
+            }
+        }
+
+        cout << cpf << endl;
+
         stringstream ss2(data);
         int dia, mes, ano;
         ss2 >> mes;
@@ -36,8 +44,6 @@ void readFile(vector<Pessoa> &pessoas, string filename) {
         Pessoa pessoa(stoi(cpf), nome + " " + sobrenome, dataDeNascimento);
         pessoas.push_back(pessoa);
 
-        cout << "####" << endl;
-
     }
 
 }
@@ -45,10 +51,9 @@ void readFile(vector<Pessoa> &pessoas, string filename) {
 void preencherArvores(avl_tree<int> &arvoreCpf, avl_tree<string> &arvoreNome, avl_tree<Date> &arvoreData, vector<Pessoa> &pessoas) {
 
     for (int i = 0; i < pessoas.size(); i++) {
-        arvoreCpf.add(pessoas[i].getCpf());
-        arvoreNome.add(pessoas[i].getNome());
-        arvoreData.add(pessoas[i].getDataDeNascimento());
-        cout << "####" << endl;
+        arvoreCpf.add(&pessoas[i].getCpf());
+        arvoreNome.add(&pessoas[i].getNome());
+        arvoreData.add(&pessoas[i].getDataDeNascimento());
     }
 
 }
@@ -57,20 +62,20 @@ int main() {
     vector<Pessoa> pessoas;
     readFile(pessoas, "data.csv");
 
-    avl_tree<int> arvoreCpf;
-    avl_tree<string> arvoreNome;
-    avl_tree<Date> arvoreData;
+    avl_tree<int> *arvoreCpf = new avl_tree<int>;
+    avl_tree<string> *arvoreNome = new avl_tree<string>;
+    avl_tree<Date> *arvoreData = new avl_tree<Date>;
 
-    preencherArvores(arvoreCpf, arvoreNome, arvoreData, pessoas);
+    preencherArvores(*arvoreCpf, *arvoreNome, *arvoreData, pessoas);
 
     cout << "Arvore de CPFs:" << endl;
-    arvoreCpf.bshow();
+    arvoreCpf->bshow();
 
     cout << "Arvore de nomes:" << endl;
-    arvoreNome.bshow();
+    arvoreNome->bshow();
 
     cout << "Arvore de datas de nascimento:" << endl;
-    arvoreData.bshow();
+    arvoreData->bshow();
 
     for(int i = 0; i < pessoas.size(); i++) {
         cout << "Pessoa " << i + 1 << ":" << endl;

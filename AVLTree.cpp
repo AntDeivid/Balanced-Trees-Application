@@ -43,7 +43,7 @@ Node<T>* avl_tree<T>::leftRotation(Node<T> *p) {
 // função pública que recebe uma chave e a insere
 // somente se ela não for repetida
 template <typename T>
-void avl_tree<T>::add(T key) {
+void avl_tree<T>::add(T *key) {
     root = add(root, key);
 }
 
@@ -51,7 +51,7 @@ void avl_tree<T>::add(T key) {
 // e uma chave e insere a chave na tree se e somente se 
 // ela nao for repetida. Claro, tem que deixar AVL novamente
 template <typename T>
-Node<T>* avl_tree<T>::add(Node<T> *p, T key) {
+Node<T>* avl_tree<T>::add(Node<T> *p, T *key) {
     if(p == nullptr)
         return new Node<T>(key);
     if(key == p->key) 
@@ -67,7 +67,7 @@ Node<T>* avl_tree<T>::add(Node<T> *p, T key) {
 }
 
 template <typename T>
-Node<T>* avl_tree<T>::fixup_node(Node<T> *p, T key) {
+Node<T>* avl_tree<T>::fixup_node(Node<T> *p, T *key) {
     // recalcula a altura de p
     p->height = 1 + max(height(p->left),height(p->right));
 
@@ -138,12 +138,12 @@ void avl_tree<T>::bshow(Node<T> *node, std::string heranca) const {
 }
 
 template <typename T>
-void avl_tree<T>::remove(T key) {
+void avl_tree<T>::remove(T *key) {
     root = remove(root, key);
 }
 
 template <typename T>
-Node<T>* avl_tree<T>::remove(Node<T> *node, T key) {
+Node<T>* avl_tree<T>::remove(Node<T> *node, T *key) {
     if(node == nullptr) // node nao encontrado
         return nullptr; /*L\pauseL*/
     if(key < node->key) 

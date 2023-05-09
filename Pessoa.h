@@ -13,11 +13,11 @@ class Pessoa {
         Pessoa() = default;
         Pessoa(int cpf, std::string nome, Date dataDeNascimento) : cpf(cpf), nome(nome), dataDeNascimento(dataDeNascimento) {}
 
-        int getCpf() const { return cpf; }
+        int& getCpf() { return this->cpf; }
         void setCpf(int novoCpf) { this->cpf = novoCpf; }
-        std::string getNome() const { return nome; }
+        std::string getNome() { return this->nome; }
         void setNome(std::string novoNome) { this->nome = novoNome; }
-        Date getDataDeNascimento() const { return dataDeNascimento; }
+        Date getDataDeNascimento() { return this->dataDeNascimento; }
         void setDataDeNascimento(Date novaData) { this->dataDeNascimento = novaData; }
 
 };
