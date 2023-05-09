@@ -15,9 +15,9 @@ class Pessoa {
 
         int& getCpf() { return this->cpf; }
         void setCpf(int novoCpf) { this->cpf = novoCpf; }
-        std::string getNome() { return this->nome; }
+        std::string& getNome() { return this->nome; }
         void setNome(std::string novoNome) { this->nome = novoNome; }
-        Date getDataDeNascimento() { return this->dataDeNascimento; }
+        Date& getDataDeNascimento() { return this->dataDeNascimento; }
         void setDataDeNascimento(Date novaData) { this->dataDeNascimento = novaData; }
 
 };

@@ -24,13 +24,20 @@ void readFile(vector<Pessoa> &pessoas, string filename) {
         getline(ss, data, ',');
         getline(ss, cidade, ',');
 
-        for(int i = 0; i < cpf.size(); i++) {
+        /*for(int i = 0; i < cpf.size(); i++) {
             if (cpf[i] == '.' || cpf[i] == '-') {
                 cpf.erase(i--, 1);
             }
+        }*/
+        string newCpf = "";
+        for (char c : cpf) {
+            if (c != '.' && c != '-') {
+                newCpf += c;
+            }
         }
 
-        cout << cpf << endl;
+        //cout << cpf << endl;
+        //´╗┐38862473257
 
         stringstream ss2(data);
         int dia, mes, ano;
@@ -41,7 +48,7 @@ void readFile(vector<Pessoa> &pessoas, string filename) {
         ss2 >> ano;
         Date dataDeNascimento(mes, dia, ano);
 
-        Pessoa pessoa(stoi(cpf), nome + " " + sobrenome, dataDeNascimento);
+        Pessoa pessoa(stoll(newCpf), nome + " " + sobrenome, dataDeNascimento);
         pessoas.push_back(pessoa);
 
     }
@@ -59,6 +66,9 @@ void preencherArvores(avl_tree<int> &arvoreCpf, avl_tree<string> &arvoreNome, av
 }
 
 int main() {
+
+    system("chcp 65001 > nul");
+
     vector<Pessoa> pessoas;
     readFile(pessoas, "data.csv");
 
@@ -68,24 +78,9 @@ int main() {
 
     preencherArvores(*arvoreCpf, *arvoreNome, *arvoreData, pessoas);
 
-    cout << "Arvore de CPFs:" << endl;
+    cout << "Teste de busca por CPF: " << endl;
+    arvoreCpf->searchByCPF(*arvoreCpf, 2106664730);
     arvoreCpf->bshow();
-
-    cout << "Arvore de nomes:" << endl;
-    arvoreNome->bshow();
-
-    cout << "Arvore de datas de nascimento:" << endl;
-    arvoreData->bshow();
-
-    for(int i = 0; i < pessoas.size(); i++) {
-        cout << "Pessoa " << i + 1 << ":" << endl;
-        cout << "CPF: " << pessoas[i].getCpf() << endl;
-        cout << "Nome: " << pessoas[i].getNome() << endl;
-        cout << "Data de nascimento: " << pessoas[i].getDataDeNascimento().getDia() << "/" << pessoas[i].getDataDeNascimento().getMes() << "/" << pessoas[i].getDataDeNascimento().getAno() << endl;
-        cout << endl;
-    }
-
-    cout << pessoas.size() << endl;
 
     return 0;
 }

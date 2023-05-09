@@ -16,6 +16,10 @@ public:
     void add(T *key);
     void clear();
     void remove(T *key);
+    Node<T>* search(T key);
+    void searchByCPF(const avl_tree<T> &arvoreCPF, T key);
+    void searchByName(const avl_tree<T> &arvoreNome, T *key);
+    void searchByRG(const avl_tree<T> &arvoreRG, T *key);
 
 private:
     Node<T> *root {nullptr};
@@ -31,6 +35,7 @@ private:
     Node<T>* remove(Node<T> *node, T *key);
     Node<T>* remove_successor(Node<T> *root, Node<T> *node);
     Node<T>* fixup_deletion(Node<T> *node);
+    Node<T>* search(Node<T> *node, T key);
 };
 
 #endif

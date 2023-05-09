@@ -54,14 +54,14 @@ template <typename T>
 Node<T>* avl_tree<T>::add(Node<T> *p, T *key) {
     if(p == nullptr)
         return new Node<T>(key);
-    if(key == p->key) 
+    if(*key == *(p->key)) 
         return p;
-    if(key < p->key)
+    if(*key < *(p->key))
         p->left = add(p->left, key);
     else 
         p->right = add(p->right, key);
     
-    p = fixup_node(p, key);
+    p = fixup_node(p, key);  
 
     return p;
 }
@@ -78,17 +78,17 @@ Node<T>* avl_tree<T>::fixup_node(Node<T> *p, T *key) {
         return p;
     }
 
-    if(bal < -1 && key < p->left->key) {
+    if(bal < -1 && *key < *(p->left->key)) {
         p = rightRotation(p);
     }
-    else if(bal < -1 && key > p->left->key) {
+    else if(bal < -1 && *key > *(p->left->key)) {
         p->left = leftRotation(p->left);
         p = rightRotation(p);
     }
-    else if(bal > 1 && key > p->right->key) {
+    else if(bal > 1 && *key > *(p->right->key)) {
         p = leftRotation(p);
     }
-    else if(bal > 1 && key < p->right->key) {
+    else if(bal > 1 && *key < *(p->right->key)) {
         p->right = rightRotation(p->right);
         p = leftRotation(p);
     }
@@ -132,7 +132,7 @@ void avl_tree<T>::bshow(Node<T> *node, std::string heranca) const {
         std::cout << "#" << std::endl;
         return;
     }
-    std::cout << node->key << std::endl;
+    std::cout << *(node->key) << std::endl;
     if(node != nullptr && (node->left != nullptr || node->right != nullptr))
         bshow(node->left, heranca + "l");
 }
@@ -275,6 +275,34 @@ int height_rec(Node<T> *node) {
         node->height = 1 + std::max(height_rec(node->left), height_rec(node->right));
         return node->height;
     }
+}
+
+template <typename T>
+Node<T>* avl_tree<T>::search(T key) {
+    return search(root, key);
+}
+
+template <typename T>
+Node<T>* avl_tree<T>::search(Node<T> *node, T key) {
+    if(node == nullptr || *(node->key) == key) { return node; }
+
+    else if(key < *(node->key)) { return search(node->left, key); }
+
+    else { return search(node->right, key); }
+}
+
+// funcao que recebe uma árvore por referência e um ponteiro para uma chave
+// e imprime, além do cpf, nome e data de nascimento
+template <typename T>
+void avl_tree<T>::searchByCPF(const avl_tree<T>& t, T key) {
+    Node<T> *node = search(key);
+    if (node == nullptr) cout << "deu ruim" << endl;
+    if(node != nullptr) {
+        cout << "CPF: " << *(node->key) << endl;
+        //cout << "Nome: " << node->key->getNome() << endl;
+        //cout << "Data de nascimento: " << node->key->getDataDeNascimento() << endl;
+    }
+    else { cout << "CPF nao encontrado" << endl; }
 }
 
 template class avl_tree<int>;
