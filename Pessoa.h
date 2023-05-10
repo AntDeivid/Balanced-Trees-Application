@@ -5,15 +5,15 @@
 
 class Pessoa {
     private:
-        int cpf;
+        std::string cpf;
         std::string nome;
         Date dataDeNascimento;
     
     public:
         Pessoa() = default;
-        Pessoa(int cpf, std::string nome, Date dataDeNascimento) : cpf(cpf), nome(nome), dataDeNascimento(dataDeNascimento) {}
+        Pessoa(std::string cpf, std::string nome, Date dataDeNascimento) : cpf(cpf), nome(nome), dataDeNascimento(dataDeNascimento) {}
 
-        int& getCpf() { return this->cpf; }
+        std::string& getCpf() { return this->cpf; }
         void setCpf(int novoCpf) { this->cpf = novoCpf; }
         std::string& getNome() { return this->nome; }
         void setNome(std::string novoNome) { this->nome = novoNome; }

@@ -3,6 +3,7 @@
 #include "node.h"
 #include "AVLTree.h"
 #include "Data.h"
+#include "Pessoa.h"
 using namespace std;
 
 // retorna a altura do nó.
@@ -296,11 +297,10 @@ Node<T>* avl_tree<T>::search(Node<T> *node, T key) {
 template <typename T>
 void avl_tree<T>::searchByCPF(const avl_tree<T>& t, T key) {
     Node<T> *node = search(key);
-    if (node == nullptr) cout << "deu ruim" << endl;
     if(node != nullptr) {
         cout << "CPF: " << *(node->key) << endl;
-        //cout << "Nome: " << node->key->getNome() << endl;
-        //cout << "Data de nascimento: " << node->key->getDataDeNascimento() << endl;
+        cout << "Nome: " << (*(Pessoa*)node->key).getNome() << endl;
+        cout << "Data de Nascimento: " << (*(Pessoa*)node->key).getDataDeNascimento() << endl;
     }
     else { cout << "CPF nao encontrado" << endl; }
 }

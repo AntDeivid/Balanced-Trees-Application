@@ -24,21 +24,6 @@ void readFile(vector<Pessoa> &pessoas, string filename) {
         getline(ss, data, ',');
         getline(ss, cidade, ',');
 
-        /*for(int i = 0; i < cpf.size(); i++) {
-            if (cpf[i] == '.' || cpf[i] == '-') {
-                cpf.erase(i--, 1);
-            }
-        }*/
-        string newCpf = "";
-        for (char c : cpf) {
-            if (c != '.' && c != '-') {
-                newCpf += c;
-            }
-        }
-
-        //cout << cpf << endl;
-        //´╗┐38862473257
-
         stringstream ss2(data);
         int dia, mes, ano;
         ss2 >> mes;
@@ -48,14 +33,14 @@ void readFile(vector<Pessoa> &pessoas, string filename) {
         ss2 >> ano;
         Date dataDeNascimento(mes, dia, ano);
 
-        Pessoa pessoa(stoll(newCpf), nome + " " + sobrenome, dataDeNascimento);
+        Pessoa pessoa(cpf, nome + " " + sobrenome, dataDeNascimento);
         pessoas.push_back(pessoa);
 
     }
 
 }
 
-void preencherArvores(avl_tree<int> &arvoreCpf, avl_tree<string> &arvoreNome, avl_tree<Date> &arvoreData, vector<Pessoa> &pessoas) {
+void preencherArvores(avl_tree<string> &arvoreCpf, avl_tree<string> &arvoreNome, avl_tree<Date> &arvoreData, vector<Pessoa> &pessoas) {
 
     for (int i = 0; i < pessoas.size(); i++) {
         arvoreCpf.add(&pessoas[i].getCpf());
@@ -72,15 +57,15 @@ int main() {
     vector<Pessoa> pessoas;
     readFile(pessoas, "data.csv");
 
-    avl_tree<int> *arvoreCpf = new avl_tree<int>;
+    avl_tree<string> *arvoreCpf = new avl_tree<string>;
     avl_tree<string> *arvoreNome = new avl_tree<string>;
     avl_tree<Date> *arvoreData = new avl_tree<Date>;
 
     preencherArvores(*arvoreCpf, *arvoreNome, *arvoreData, pessoas);
 
     cout << "Teste de busca por CPF: " << endl;
-    arvoreCpf->searchByCPF(*arvoreCpf, 2106664730);
-    arvoreCpf->bshow();
+    arvoreCpf->searchByCPF(*arvoreCpf, "388.624.732-57");
+    //arvoreNome->bshow();
 
     return 0;
 }
