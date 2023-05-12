@@ -148,6 +148,5 @@ struct Date
                 throw std::out_of_range("Index out of range");
         }
     }
-
 };
 #endif // DATE_H
