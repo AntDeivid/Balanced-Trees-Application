@@ -66,12 +66,11 @@ int main() {
 
     preencherArvores(*arvoreCpf, *arvoreNome, *arvoreData, pessoas);
 
-    cout << "Teste de busca por CPF: " << endl;
-    //arvoreCpf->generalSearch("388.624.732-57", 1, *arvoreCpf, *arvoreNome);
-
-    arvoreNome->searchByName("Mar");
-    
-    //arvoreNome->bshow();
+    cout << "Teste de busca por data de nascimento: " << endl;
+    Date dataInicial(1, 1, 1995);
+    Date dataFinal(1, 1, 2005);
+    //arvoreData->searchByBirthDate(dataInicial, dataFinal);
+    arvoreData->bshow();
 
     return 0;
 }
