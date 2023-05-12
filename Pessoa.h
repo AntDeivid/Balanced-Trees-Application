@@ -10,9 +10,11 @@ class Pessoa {
         Date dataDeNascimento;
     
     public:
-        Pessoa() = default;
+        Pessoa() = default; // Construtor padrão
+        // Construtor
         Pessoa(std::string cpf, std::string nome, Date dataDeNascimento) : cpf(cpf), nome(nome), dataDeNascimento(dataDeNascimento) {}
 
+        // Getters e Setters
         std::string& getCpf() { return this->cpf; }
         void setCpf(int novoCpf) { this->cpf = novoCpf; }
         std::string& getNome() { return this->nome; }
