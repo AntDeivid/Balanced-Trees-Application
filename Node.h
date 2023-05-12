@@ -4,7 +4,7 @@
 
 template <typename T>
 struct Node {
-    // atributos
+    // Atributos do nó
     T *key;
     int height;
     Node<T> *left;
