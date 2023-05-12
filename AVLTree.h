@@ -52,7 +52,7 @@ public:
 
     void searchByName(T key) { searchByName(root, key); }
 
-    void searchByRG(const avl_tree<T> &arvoreRG, T key);
+    void searchByBirthDate(T& initialDate, T& endDate) { searchByBirthDate(root, initialDate, endDate); }
 
 private:
     Node<T> *root {nullptr};
@@ -239,6 +239,51 @@ private:
         else {
             searchByName(node->left, key);
             searchByName(node->right, key);
+        }
+    }
+
+    void searchByBirthDate(Node<T> *node, T& initialDate, T& endDate) {
+        /*Node<T> *currentNode = node;
+        if (*(currentNode->key) > endDate) { return; }
+
+        if (*(currentNode->key) >= initialDate && *(currentNode->key) <= endDate) {
+            std::cout << *(currentNode->key) << std::endl;
+            if (currentNode->sameKey.size() > 0) {
+                for (int i = 0; i < currentNode->sameKey.size(); i++) {
+                    std::cout << *(currentNode->sameKey[i]) << std::endl;
+                }
+            }
+        }
+
+        if (*(currentNode->left->key) >= initialDate) {
+            searchByBirthDate(currentNode->left, initialDate, endDate);
+            searchByBirthDate(currentNode->right, initialDate, endDate);
+        }
+        else {
+            searchByBirthDate(currentNode->right, initialDate, endDate);
+        }*/
+        if (node == nullptr) {
+            return;
+        }
+        Node<T> *currentNode = node;
+        if (*(currentNode->key) > endDate) { 
+            return; 
+        }
+        if (currentNode->left != nullptr && *(currentNode->left->key) >= initialDate) {
+            searchByBirthDate(currentNode->left, initialDate, endDate);
+        }
+        // posso chamar recursivamente o currentNode->left->right? Pois o currentNode->left pode
+        // ser menor que o initialDate, mas o currentNode->left->right pode ser maior que o initialDate
+        if (*(currentNode->key) >= initialDate && *(currentNode->key) <= endDate) {
+            std::cout << *(currentNode->key) << std::endl;
+            if (currentNode->sameKey.size() > 0) {
+                for (int i = 0; i < currentNode->sameKey.size(); i++) {
+                    std::cout << *(currentNode->sameKey[i]) << std::endl;
+                }
+            }
+        }
+        if (currentNode->right != nullptr && *(currentNode->right->key) <= endDate) {
+            searchByBirthDate(currentNode->right, initialDate, endDate);
         }
     }
 };
