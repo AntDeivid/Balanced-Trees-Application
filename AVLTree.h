@@ -17,9 +17,10 @@ public:
     void clear();
     void remove(T *key);
     Node<T>* search(T key);
+    void generalSearch(T busca, int op, avl_tree<T> &arvoreCPF, avl_tree<T> &arvoreNome, avl_tree<T> &arvoreDataNasc);
     void searchByCPF(const avl_tree<T> &arvoreCPF, T key);
-    void searchByName(const avl_tree<T> &arvoreNome, T *key);
-    void searchByRG(const avl_tree<T> &arvoreRG, T *key);
+    void searchByName(T);
+    void searchByRG(const avl_tree<T> &arvoreRG, T key);
 
 private:
     Node<T> *root {nullptr};

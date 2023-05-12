@@ -43,9 +43,12 @@ void readFile(vector<Pessoa> &pessoas, string filename) {
 void preencherArvores(avl_tree<string> &arvoreCpf, avl_tree<string> &arvoreNome, avl_tree<Date> &arvoreData, vector<Pessoa> &pessoas) {
 
     for (int i = 0; i < pessoas.size(); i++) {
-        arvoreCpf.add(&pessoas[i].getCpf());
-        arvoreNome.add(&pessoas[i].getNome());
-        arvoreData.add(&pessoas[i].getDataDeNascimento());
+        string *cpf = &pessoas[i].getCpf();
+        arvoreCpf.add(cpf);
+        string *nome = &pessoas[i].getNome();
+        arvoreNome.add(nome);
+        Date *data = &pessoas[i].getDataDeNascimento();
+        arvoreData.add(data);
     }
 
 }
@@ -64,8 +67,9 @@ int main() {
     preencherArvores(*arvoreCpf, *arvoreNome, *arvoreData, pessoas);
 
     cout << "Teste de busca por CPF: " << endl;
-    arvoreCpf->searchByCPF(*arvoreCpf, "388.624.732-57");
-    //arvoreNome->bshow();
+    //arvoreCpf->generalSearch("388.624.732-57", 1, *arvoreCpf, *arvoreNome);
+
+    arvoreNome->searchByName("Ka");
 
     return 0;
 }

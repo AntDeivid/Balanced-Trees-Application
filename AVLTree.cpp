@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <string>
+#include <typeinfo>
 #include "node.h"
 #include "AVLTree.h"
 #include "Data.h"
@@ -253,17 +255,6 @@ int avl_tree<T>::height() const {
     return root->height;
 }
 
-// recebe como parametros a raiz de uma arvore e um vetor
-// e percorre a arvore em ordem simetrica preenchendo o vetor
-// com as chaves encontradas
-template <typename T>
-void inorder_rec(Node<T> *node, std::vector<int>& v) {
-    if(node != nullptr) {
-        inorder_rec(node->left, v);
-        v.push_back(node->key);
-        inorder_rec(node->right, v);
-    }
-}
 
 // funcao que recebe o ponteiro para a raiz de uma arvore com K nodes e ajusta o
 // campo height de todos os K nodes dessa arvore.
@@ -279,18 +270,59 @@ int height_rec(Node<T> *node) {
 }
 
 template <typename T>
+void inorder_rec(Node<T> *node, T key) {
+    if(node != nullptr) {
+        inorder_rec(node->left, key);
+        int verificador = 1;
+        string str = *(node->key);
+        string str2 = key;
+        for (int i = 0; i < key.size(); i ++) {
+            if (str[i] != key[i]) { verificador = 0; break; }
+        }
+        if ( verificador == 1 ) { cout << "#: " << *(node->key) << endl; }
+        inorder_rec(node->right, key);
+    }
+}
+
+template <typename T>
 Node<T>* avl_tree<T>::search(T key) {
     return search(root, key);
 }
 
 template <typename T>
 Node<T>* avl_tree<T>::search(Node<T> *node, T key) {
+
     if(node == nullptr || *(node->key) == key) { return node; }
 
     else if(key < *(node->key)) { return search(node->left, key); }
 
     else { return search(node->right, key); }
 }
+/*
+template <typename T>
+void avl_tree<T>::generalSearch(T busca, int op, avl_tree<T> &arvoreCPF, avl_tree<T> &arvoreNome) {
+
+    Node<T> *node = arvoreNome.root;
+    cout << (*(Pessoa*)node->key).getNome()[0]<< endl;
+    //cout << *(node->key)->getDia() << endl;
+    //cout << (*(arvoreNome.root->key))[0] << endl;
+    
+    if (op == 1) {
+        Node<T> *node = search(arvoreCPF.root, busca);
+        if (node != nullptr) {
+            cout << "CPF: " << *(node->key) << endl;
+            cout << "Nome: " << (*(Pessoa*)node->key).getNome()[0] << endl;
+            cout << "Data de Nascimento: " << (*(Pessoa*)node->key).getDataDeNascimento() << endl;
+        }
+        else { cout << "CPF nao encontrado" << endl; }
+    }
+
+
+    /*else if (op == 2) {
+        inorder_rec(arvoreNome.root, busca);
+    }
+}
+*/
 
 // funcao que recebe uma árvore por referência e um ponteiro para uma chave
 // e imprime, além do cpf, nome e data de nascimento
@@ -305,6 +337,13 @@ void avl_tree<T>::searchByCPF(const avl_tree<T>& t, T key) {
     else { cout << "CPF nao encontrado" << endl; }
 }
 
-template class avl_tree<int>;
+template <typename T>
+void avl_tree<T>::searchByName(T key) {
+    Node<T> *node = this->root;
+    if (node->key->find(key) == 0) {
+        cout << (*(node->key))[0] << endl;
+    }
+}
+
 template class avl_tree<string>;
 template class avl_tree<Date>;
