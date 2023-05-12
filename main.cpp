@@ -69,7 +69,8 @@ int main() {
     cout << "Teste de busca por CPF: " << endl;
     //arvoreCpf->generalSearch("388.624.732-57", 1, *arvoreCpf, *arvoreNome);
 
-    arvoreNome->searchByName("Ka");
+    arvoreNome->searchByName("Mar");
+    //arvoreNome->bshow();
 
     return 0;
 }

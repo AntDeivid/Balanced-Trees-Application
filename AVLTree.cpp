@@ -3,7 +3,7 @@
 #include <string>
 #include <typeinfo>
 #include "node.h"
-#include "AVLTree.h"
+//#include "AVLTree.h"
 #include "Data.h"
 #include "Pessoa.h"
 using namespace std;
@@ -340,9 +340,8 @@ void avl_tree<T>::searchByCPF(const avl_tree<T>& t, T key) {
 template <typename T>
 void avl_tree<T>::searchByName(T key) {
     Node<T> *node = this->root;
-    if (node->key->find(key) == 0) {
-        cout << (*(node->key))[0] << endl;
-    }
+
+    inorder_rec(node, key);
 }
 
 template class avl_tree<string>;

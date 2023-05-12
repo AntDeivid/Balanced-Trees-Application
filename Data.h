@@ -135,5 +135,19 @@ struct Date
         os << data.mes << "/" << data.dia << "/" << data.ano;
         return os;
     }
+
+    int& operator[](int index) {
+        switch (index) {
+            case 0:
+                return dia;
+            case 1:
+                return mes;
+            case 2:
+                return ano;
+            default:
+                throw std::out_of_range("Index out of range");
+        }
+    }
+
 };
 #endif // DATE_H
