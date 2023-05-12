@@ -130,6 +130,14 @@ struct Date
         }
     }
 
+    bool operator>=(Date&data) {
+        return (*this > data || *this == data);
+    }
+
+    bool operator<=(Date&data) {
+        return (*this < data || *this == data);
+    }
+
     friend std::ostream &operator<<(std::ostream &os, Date &data)
     {
         os << data.mes << "/" << data.dia << "/" << data.ano;
