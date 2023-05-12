@@ -70,6 +70,7 @@ int main() {
     //arvoreCpf->generalSearch("388.624.732-57", 1, *arvoreCpf, *arvoreNome);
 
     arvoreNome->searchByName("Mar");
+    
     //arvoreNome->bshow();
 
     return 0;
