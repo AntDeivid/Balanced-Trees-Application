@@ -255,12 +255,9 @@ private:
     }
 
     void searchByBirthDate(Node<T> *node, T& initialDate, T& endDate) {
-        
-        if (node == nullptr) {
-            return;
-        }
+
         Node<T> *currentNode = node;
-        if (*(currentNode->key) > endDate) { 
+        if (node == nullptr || *(currentNode->key) > endDate) { 
             return; 
         }
         if (currentNode->left != nullptr && *(max(currentNode->left)->key) >= initialDate) {
