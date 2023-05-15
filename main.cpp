@@ -69,8 +69,8 @@ int main() {
     cout << "Teste de busca por data de nascimento: " << endl;
     Date dataInicial(1, 1, 1995);
     Date dataFinal(1, 1, 2005);
-    //arvoreData->searchByBirthDate(dataInicial, dataFinal);
-    arvoreData->bshow();
+    arvoreData->searchByBirthDate(dataInicial, dataFinal);
+    //arvoreData->bshow();
 
     return 0;
 }
