@@ -13,9 +13,33 @@ class avl_tree {
 
 
 public:
+    /**
+     * @brief Construtor da classe AVLTree
+     */
     avl_tree() = default;
-    avl_tree(const avl_tree<T>& t); 
 
+
+    /**
+     * @brief Construtor de cópia da classe AVLTree
+     * 
+     * @param t Árvore do tipo T passada por referência
+     */
+    avl_tree(const avl_tree<T>& t);
+
+
+    /**
+     * @brief Destrutor da classe AVLTree
+     * 
+     */
+    ~avl_tree() { clear(); }
+
+
+    /**
+     * @brief Sobrecarga do operador de atribuição
+     * 
+     * @param t Árvore do tipo T passada por referência
+     * @return avl_tree& 
+     */
     avl_tree& operator=(const avl_tree<T>& t) {
         if(this != &t) {
             clear();
@@ -24,22 +48,60 @@ public:
         return *this;
     }
 
+
+    /**
+     * @brief Função que retorna a altura da árvore
+     * 
+     * @return int 
+     */
     int height() const { return root->height; }
 
+
+    /**
+     * @brief Função pública que chama a função privada
+     * responsável por imprimir a árvore
+     */
     void bshow() const { bshow(root, ""); }
 
-    ~avl_tree() { clear(); }
 
+    /**
+     * @brief Função pública add que chama a função privada
+     * e adiciona um nó na árvore
+     * @param key Chave dereferenciada do tipo T
+     */
     void add(T *key) { root = add(root, key); }
 
+    /**
+     * @brief Função pública clear que chama a função privada
+     * responsável por limpar a árvore
+     */
     void clear() { root = clear(root); }
 
+    /**
+     * @brief Função pública remove que chama a função privada
+     * responsável por remover um nó da árvore
+     * @param key Chave dereferenciada do tipo T
+     */
     void remove(T *key) { root = remove(root, key); }
 
+    /**
+     * @brief Função pública search que chama a função privada
+     * responsável por buscar um nó na árvore
+     * @param key Chave do tipo T
+     * @return Node<T>* 
+     */
     Node<T>* search(T key) { return search(root, key); }
 
-    void generalSearch(T busca, int op, avl_tree<T> &arvoreCPF, avl_tree<T> &arvoreNome, avl_tree<T> &arvoreDataNasc);
+    //void generalSearch(T busca, int op, avl_tree<T> &arvoreCPF, avl_tree<T> &arvoreNome, avl_tree<T> &arvoreDataNasc);
 
+    /**
+     * @brief Função que busca um CPF recebido por parâmetro
+     * e o busca na árvore de CPFs. Caso encontre, imprime a chave
+     * do nó atual (CPF), e faz um casting de ponteiro para Pessoa
+     * para imprimir o nome e a data de nascimento do objeto Pessoa
+     * @param arvoreCPF Àrvore de CPFs onde deverá ser feita a busca
+     * @param key Chave do tipo T que deve ser buscada
+     */
     void searchByCPF(const avl_tree<T> &arvoreCPF, T key) {
         Node<T> *node = search(key);
         if(node != nullptr) {
@@ -242,12 +304,24 @@ private:
         }
     }
 
+    /**
+     * @brief Retorna o maior elemento da árvore
+     * Quanto maior o elemento, mais à direita ele está
+     * @param node
+     * @return Node<T>*
+    */
     Node<T>* max(Node<T> *node) {
         if(node == nullptr) { return nullptr; }
         if(node->right == nullptr) { return node; }
         return max(node->right);
     }
 
+    /**
+     * @brief Retorna o menor elemento da árvore
+     * Quanto menor o elemento, mais à esquerda ele está
+     * @param node
+     * @return Node<T>*
+    */
     Node<T>* min(Node<T> *node) {
         if(node == nullptr) { return nullptr; }
         if(node->left == nullptr) { return node; }
