@@ -21,7 +21,6 @@ public:
 
     /**
      * @brief Construtor de cópia da classe AVLTree
-     * 
      * @param t Árvore do tipo T passada por referência
      */
     avl_tree(const avl_tree<T>& t);
@@ -29,14 +28,12 @@ public:
 
     /**
      * @brief Destrutor da classe AVLTree
-     * 
      */
     ~avl_tree() { clear(); }
 
 
     /**
      * @brief Sobrecarga do operador de atribuição
-     * 
      * @param t Árvore do tipo T passada por referência
      * @return avl_tree& 
      */
@@ -51,7 +48,6 @@ public:
 
     /**
      * @brief Função que retorna a altura da árvore
-     * 
      * @return int 
      */
     int height() const { return root->height; }
@@ -112,17 +108,46 @@ public:
         else { std::cout << "CPF nao encontrado" << std::endl; }
     }
 
+    /**
+     * @brief Função que busca na árvore de nomes, nomes que
+     * iniciam com a string passada por parâmetro
+     * @param key Chave do tipo T que deve ser buscada
+     */
     void searchByName(T key) { searchByName(root, key); }
 
+    /**
+     * @brief Função que busca na árvore de datas de nascimento, todas
+     * as datas que estão entre as datas passadas por parâmetro
+     * @param initialDate Objeto do tipo T que representa a data inicial
+     * @param endDate Objeto do tipo T que representa a data final
+     */
     void searchByBirthDate(T& initialDate, T& endDate) { searchByBirthDate(root, initialDate, endDate); }
 
 private:
+    /**
+     * @brief Raíz da árvore 
+     */
     Node<T> *root {nullptr};
 
+    /**
+     * @brief Retorna a altura de um nó
+     * @param node Nó que terá sua altura retornada
+     * @return int 
+     */
     int height(Node<T> *node) { return (node == nullptr) ? 0 : node->height; }
 
+    /**
+     * @brief Retorna o balanceamento de um nó
+     * @param node Nó que terá seu balanceamento retornado
+     * @return int 
+     */
     int balance(Node<T> *node) { return height(node->right) - height(node->left); }
 
+    /**
+     * @brief Função privada responsável por imprimir a árvore
+     * @param node 
+     * @param heranca 
+     */
     void bshow(Node<T> *node, std::string heranca) const {
         if(node != nullptr && (node->left != nullptr || node->right != nullptr))
             bshow(node->right , heranca + "r");
@@ -140,6 +165,11 @@ private:
         }
     }
 
+    /**
+     * @brief Realiza uma rotação à direita
+     * @param p Nó que será rotacionado	
+     * @return Node<T>* 
+     */
     Node<T>* rightRotation(Node<T> *p) {
         Node<T> *u = p->left;
         p->left = u->right;
@@ -150,6 +180,11 @@ private:
         return u;
     }
 
+    /**
+     * @brief Realiza uma rotação à esquerda
+     * @param p Nó que será rotacionado	
+     * @return Node<T>* 
+     */
     Node<T>* leftRotation(Node<T> *p) {
         Node<T> *u = p->right;
         p->right = u->left;
@@ -160,6 +195,14 @@ private:
         return u;
     }
 
+    /**
+     * @brief Função que adiciona um nó na árvore. A chave é um ponteiro, por natureza,
+     * no entanto, nas comparações para saber em qual lado da árvore o nó será adicionado,
+     * é feito um dereferenciamento da chave
+     * @param p Raíz da árvore a qual o nó será adicionado
+     * @param key Chave do tipo T que será adicionada
+     * @return Node<T>* 
+     */
     Node<T>* add(Node<T> *p, T *key) {
         if(p == nullptr)
             return new Node<T>(key);
@@ -178,6 +221,12 @@ private:
         return p;
     }
 
+    /**
+     * @brief Função que ajusta o nó após sua inserção
+     * @param p Nó que será ajustado
+     * @param key Chamve do tipo T
+     * @return Node<T>* 
+     */
     Node<T>* fixup_node(Node<T> *p, T *key) {
         // recalcula a altura de p
         p->height = 1 + std::max(height(p->left),height(p->right));
@@ -206,6 +255,11 @@ private:
         return p;
     }
 
+    /**
+     * @brief Função que limpa a árvore excluindo todos os nós
+     * @param node Raíz da árvore
+     * @return Node<T>* 
+     */
     Node<T>* clear(Node<T> *node) {
         if(node != nullptr) {
             node->left = clear(node->left);
@@ -215,6 +269,12 @@ private:
         return nullptr;
     }
 
+    /**
+     * @brief Remove um nó da árvore
+     * @param node Raíz da árvore
+     * @param key Chamve do tipo T a ser removida
+     * @return Node<T>* 
+     */
     Node<T>* remove(Node<T> *node, T *key) {
         if(node == nullptr) // node nao encontrado
             return nullptr; /*L\pauseL*/
@@ -237,6 +297,12 @@ private:
         
     }
 
+    /**
+     * @brief Função que remove o sucessor de um nó
+     * @param root Raíz da árvore
+     * @param node 
+     * @return Node<T>* 
+     */
     Node<T>* remove_successor(Node<T> *root, Node<T> *node) {
         if(node->left != nullptr)
             node->left = remove_successor(root, node->left);
@@ -251,6 +317,11 @@ private:
         return node;
     }
 
+    /**
+     * @brief Função que ajusta o nó após sua remoção
+     * @param node Nó que será ajustado
+     * @return Node<T>* 
+     */
     Node<T>* fixup_deletion(Node<T> *node) {
         node->height = 1 + std::max(height(node->left),height(node->right));
 
@@ -274,6 +345,12 @@ private:
         return node;
     }
 
+    /**
+     * @brief Realiza uma busca na árvore pelo nó com a chave key
+     * @param node Raíz da árvore
+     * @param key Chamve do tipo T a ser buscada
+     * @return Node<T>* 
+     */
     Node<T>* search(Node<T> *node, T key) {
         if(node == nullptr || *(node->key) == key) { return node; }
 
@@ -283,7 +360,7 @@ private:
     }
 
     void searchByName(Node<T> *node, T key) {
-        if (node == NULL) { return; }
+        if (node == nullptr) { return; }
 
         if (node->key->compare(0, key.length(), key) == 0) {
             std::cout << *(node->key) << std::endl;
@@ -331,7 +408,7 @@ private:
     void searchByBirthDate(Node<T> *node, T& initialDate, T& endDate) {
 
         Node<T> *currentNode = node;
-        if (node == nullptr || *(currentNode->key) > endDate) { 
+        if (node == nullptr || *(currentNode->key) > endDate) { 0
             return; 
         }
         if (currentNode->left != nullptr && *(max(currentNode->left)->key) >= initialDate) {
