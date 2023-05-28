@@ -45,4 +45,4 @@ O programa "Balanced-Trees-Application" é um aplicativo de linha de comando que
 - Os dados do arquivo são lidos e armazenados em objetos Pessoa, enquanto todos estes objetos são armazenados em um vector. Todos os dados estão armazenados nos objetos do vector, nem um atributo sequer foi duplicado.
 - No nó é armazenado um ponteiro tipo T (nome, cpf ou data de nascimento) como chave. O balanceamento é feito por essa chave. O valor da chave é obtido dereferenciando o ponteiro, os demais atributos são obtidos a partir dos métodos getter da classe Pessoa, a partir do ponteiro para o objeto do nó.
 
-Agora você pode compilar e executar o programa "Balanced-Trees-Application" para interagir com a árvore AVL e realizar pesquisas com base nos dados fornecidos. Divirta-se!
+**Agora você pode compilar e executar o programa "Balanced-Trees-Application" para interagir com a árvore AVL e realizar pesquisas com base nos dados fornecidos. Divirta-se!**
