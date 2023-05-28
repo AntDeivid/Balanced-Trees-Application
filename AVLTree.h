@@ -65,7 +65,7 @@ public:
      * e adiciona um nó na árvore
      * @param key Chave dereferenciada do tipo T
      */
-    void add(T *key) { root = add(root, key); }
+    void add(T *key, Pessoa *pessoa) { root = add(root, key, pessoa); }
 
     /**
      * @brief Função pública clear que chama a função privada
@@ -98,12 +98,11 @@ public:
      * @param arvoreCPF Àrvore de CPFs onde deverá ser feita a busca
      * @param key Chave do tipo T que deve ser buscada
      */
-    void searchByCPF(const avl_tree<T> &arvoreCPF, T key) {
+    void searchByCPF(T key) {
         Node<T> *node = search(key);
+        // Se o nó não for nulo, imprime o CPF, o nome e a data de nascimento
         if(node != nullptr) {
-            std::cout << "CPF: " << *(node->key) << std::endl;
-            std::cout << "Nome: " << (*(Pessoa*)node->key).getNome() << std::endl;
-            std::cout << "Data de Nascimento: " << (*(Pessoa*)node->key).getDataDeNascimento() << std::endl;
+            print(node, 2);
         }
         else { std::cout << "CPF nao encontrado" << std::endl; }
     }
@@ -203,18 +202,20 @@ private:
      * @param key Chave do tipo T que será adicionada
      * @return Node<T>* 
      */
-    Node<T>* add(Node<T> *p, T *key) {
+    Node<T>* add(Node<T> *p, T *key, Pessoa *pessoa) {
         if(p == nullptr)
-            return new Node<T>(key);
+            return new Node<T>(key, pessoa);
 
         if(*key < *(p->key))
-            p->left = add(p->left, key);
+            p->left = add(p->left, key, pessoa);
 
         else if(*key > *(p->key))
-            p->right = add(p->right, key);
+            p->right = add(p->right, key, pessoa);
             
-        else 
-            p->sameKey.push_back(key);
+        else
+            // Diferente da função tradicional de inserção, aqui, caso a chave já exista,
+            // um ponteiro para a pessoa é adicionado na lista de nós com a mesma chave
+            p->sameKey.push_back(pessoa);
         
         p = fixup_node(p, key);  
 
@@ -270,82 +271,6 @@ private:
     }
 
     /**
-     * @brief Remove um nó da árvore
-     * @param node Raíz da árvore
-     * @param key Chamve do tipo T a ser removida
-     * @return Node<T>* 
-     */
-    Node<T>* remove(Node<T> *node, T *key) {
-        if(node == nullptr) // node nao encontrado
-            return nullptr; /*L\pauseL*/
-        if(key < node->key) 
-            node->left = remove(node->left, key);
-        else if(key > node->key)
-            node->right = remove(node->right, key); /*L\pauseL*/
-        // encontramos no node
-        else if(node->right == nullptr) { // sem filho direito
-            Node<T> *child = node->left;
-            delete node;
-            return child;
-        }
-        else // tem filho direito: troca pelo sucessor
-            node->right = remove_successor(node, node->right); /*L\pauseL*/
-        
-        // Atualiza a altura do node e regula o node
-        node = fixup_deletion(node); 
-        return node;
-        
-    }
-
-    /**
-     * @brief Função que remove o sucessor de um nó
-     * @param root Raíz da árvore
-     * @param node 
-     * @return Node<T>* 
-     */
-    Node<T>* remove_successor(Node<T> *root, Node<T> *node) {
-        if(node->left != nullptr)
-            node->left = remove_successor(root, node->left);
-        else {
-            root->key = node->key;
-            Node<T> *aux = node->right;
-            delete node;
-            return aux;
-        }
-        // Atualiza a altura do node e regula o node
-        node = fixup_deletion(node);
-        return node;
-    }
-
-    /**
-     * @brief Função que ajusta o nó após sua remoção
-     * @param node Nó que será ajustado
-     * @return Node<T>* 
-     */
-    Node<T>* fixup_deletion(Node<T> *node) {
-        node->height = 1 + std::max(height(node->left),height(node->right));
-
-        int bal = balance(node);
-
-        // node pode estar desregulado, ha 4 casos a considerar
-        if(bal > 1 && balance(node->right) >= 0) {
-            return leftRotation(node);
-        }
-        else if(bal > 1 && balance(node->right) < 0) {
-            node->right = rightRotation(node->right);
-            return leftRotation(node);
-        }
-        else if(bal < -1 && balance(node->left) <= 0) {
-            return rightRotation(node);
-        }
-        else if(bal < -1 && balance(node->left) > 0) { 
-            node->left = leftRotation(node->left);
-            return rightRotation(node);
-        }
-        return node;
-    }
-
-    /**
      * @brief Realiza uma busca na árvore pelo nó com a chave key
      * @param node Raíz da árvore
      * @param key Chamve do tipo T a ser buscada
@@ -359,22 +284,86 @@ private:
         else { return search(node->right, key); }
     }
 
-    void searchByName(Node<T> *node, T key) {
-        if (node == nullptr) { return; }
-
-        if (node->key->compare(0, key.length(), key) == 0) {
-            std::cout << *(node->key) << std::endl;
-            if (node->sameKey.size() > 0) {
+    /**
+     * @brief Função responsável por imprimir as informações da pessoa
+     * 
+     * @param node Nó que será impresso
+     * @param op Operaçao que será realizada: 1 -> imprimir nó com chave key = nome |
+     *                                        2 -> imprimir nó com chave key = cpf |
+     *                                        3 -> imprimir nó com chave key = data de nascimento
+     */
+    void print(Node<T> *node, int op) {
+        // op = 1 -> printar nó com chave key = nome
+        if (op == 1) {
+            std::cout << "=====================================================================" << std::endl;
+            std::cout << "Nome: " << *(node->key) << std::endl;
+            std::cout << "CPF: " << node->pessoa->getCpf() << std::endl;
+            std::cout << "Data de nascimento: " << node->pessoa->getDataDeNascimento() << std::endl;
+            if (node->sameKey.size() > 0) { // se existirem nós com a mesma chave
                 for (int i = 0; i < node->sameKey.size(); i++) {
-                    std::cout << *(node->sameKey[i]) << std::endl;
+                    std::cout << "=====================================================================" << std::endl;
+                    std::cout << "Nome: " << node->sameKey[i]->getNome() << std::endl;
+                    std::cout << "CPF: " << node->sameKey[i]->getCpf() << std::endl;
+                    std::cout << "Data de nascimento: " << node->sameKey[i]->getDataDeNascimento() << std::endl;
                 }
             }
         }
 
+        // op = 2 -> printar nó com chave key = cpf
+        else if (op == 2) {
+            std::cout << "=====================================================================" << std::endl;
+            std::cout << "Nome: " << node->pessoa->getNome() << std::endl;
+            std::cout << "CPF: " << *(node->key) << std::endl;
+            std::cout << "Data de nascimento: " << node->pessoa->getDataDeNascimento() << std::endl;
+            if (node->sameKey.size() > 0) { // se existirem nós com a mesma chave
+                for (int i = 0; i < node->sameKey.size(); i++) {
+                    std::cout << "=====================================================================" << std::endl;
+                    std::cout << "Nome: " << node->sameKey[i]->getNome() << std::endl;
+                    std::cout << "CPF: " << node->sameKey[i]->getCpf() << std::endl;
+                    std::cout << "Data de nascimento: " << node->sameKey[i]->getDataDeNascimento() << std::endl;
+                }
+            }
+        }
+
+        // op = 3 -> printar nó com chave key = data de nascimento
+        else if (op == 3) {
+            std::cout << "=====================================================================" << std::endl;
+            std::cout << "Nome: " << node->pessoa->getNome() << std::endl;
+            std::cout << "CPF: " << node->pessoa->getCpf() << std::endl;
+            std::cout << "Data de nascimento: " << *(node->key) << std::endl;
+            if (node->sameKey.size() > 0) { // se existirem nós com a mesma chave
+                for (int i = 0; i < node->sameKey.size(); i++) {
+                    std::cout << "=====================================================================" << std::endl;
+                    std::cout << "Nome: " << node->sameKey[i]->getNome() << std::endl;
+                    std::cout << "CPF: " << node->sameKey[i]->getCpf() << std::endl;
+                    std::cout << "Data de nascimento: " << node->sameKey[i]->getDataDeNascimento() << std::endl;
+                }
+            }
+        }
+    }
+
+    /**
+     * @brief Recebe uma T key como um prefixo e busca na árvore todos os nós que possuem esse prefixo
+     * @param node Raíz da árvore
+     * @param key Prefixo a ser comparado
+     */
+    void searchByName(Node<T> *node, T key) {
+        if (node == nullptr) { return; }
+
+        if (node->key->compare(0, key.length(), key) == 0) { // se o prefixo for igual a chave
+            print(node, 1);
+        }
+
+        // se o primeiro caractere da chave for menor que o primeiro caractere da chave do nó atual
+        // então deve ser procurado à esquerda da árvore
         if (key[0] < (*(node->key))[0]) { searchByName(node->left, key); }
 
+        // se o primeiro caractere da chave for maior que o primeiro caractere da chave do nó atual
+        // então deve ser procurado à direita da árvore
         else if (key[0] > (*(node->key))[0]) { searchByName(node->right, key); }
 
+        // se o primeiro caractere da chave for igual ao primeiro caractere da chave do nó atual
+        // então deve ser procurado à esquerda e à direita da árvore
         else {
             searchByName(node->left, key);
             searchByName(node->right, key);
@@ -384,7 +373,7 @@ private:
     /**
      * @brief Retorna o maior elemento da árvore
      * Quanto maior o elemento, mais à direita ele está
-     * @param node
+     * @param node Raíz da árvore
      * @return Node<T>*
     */
     Node<T>* max(Node<T> *node) {
@@ -396,7 +385,7 @@ private:
     /**
      * @brief Retorna o menor elemento da árvore
      * Quanto menor o elemento, mais à esquerda ele está
-     * @param node
+     * @param node Raíz da árvore
      * @return Node<T>*
     */
     Node<T>* min(Node<T> *node) {
@@ -405,26 +394,32 @@ private:
         return min(node->left);
     }
 
+    /**
+     * @brief Recebe uma data inicial e uma data final e busca na árvore todos os nós que
+     * possuem uma data de nascimento entre essas datas
+     * @param node Raíz da árvore
+     * @param initialDate Data inicial
+     * @param endDate Data final
+     */
     void searchByBirthDate(Node<T> *node, T& initialDate, T& endDate) {
 
         Node<T> *currentNode = node;
-        if (node == nullptr || *(currentNode->key) > endDate) { 0
+        if (node == nullptr || *(currentNode->key) > endDate) {
             return; 
         }
+        // Aqui, deve ser verificado de o maior elemento da subárvore à esquerda é 
+        // maior ou igual à data inicial, se for, então deve ser procurado à esquerda
         if (currentNode->left != nullptr && *(max(currentNode->left)->key) >= initialDate) {
             searchByBirthDate(currentNode->left, initialDate, endDate);
         }
-        // posso chamar recursivamente o currentNode->left->right? Pois o currentNode->left pode
-        // ser menor que o initialDate, mas o currentNode->left->right pode ser maior que o initialDate
 
+        // Aqui, deve ser verificado se a data do nó atual está entre as datas inicial e final
+        // se estiver, então deve ser printado
         if (*(currentNode->key) >= initialDate && *(currentNode->key) <= endDate) {
-            std::cout << *(currentNode->key) << std::endl;
-            if (currentNode->sameKey.size() > 0) {
-                for (int i = 0; i < currentNode->sameKey.size(); i++) {
-                    std::cout << *(currentNode->sameKey[i]) << std::endl;
-                }
-            }
+            print(currentNode, 3);
         }
+        // Aqui, deve ser verificado de o menor elemento da subárvore à direita é
+        // menor ou igual à data final, se for, então deve ser procurado à direita
         if (currentNode->right != nullptr && *(min(currentNode->right)->key) <= endDate) {
             searchByBirthDate(currentNode->right, initialDate, endDate);
         }
