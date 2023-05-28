@@ -34,7 +34,7 @@ void readFile(vector<Pessoa> &pessoas, string filename) {
         ss2 >> ano;
         Date dataDeNascimento(mes, dia, ano);
 
-        Pessoa pessoa(cpf, nome + " " + sobrenome, dataDeNascimento);
+        Pessoa pessoa(cpf, nome + " " + sobrenome, dataDeNascimento, cidade);
         pessoas.push_back(pessoa);
 
     }
