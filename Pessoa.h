@@ -11,11 +11,12 @@ class Pessoa {
         std::string cpf; // CPF do objeto Pessoa
         std::string nome; // Nome do objeto Pessoa
         Date dataDeNascimento; // Data de nascimento do objeto Pessoa
+        std::string cidade; // Cidade do objeto Pessoa
     
     public:
         Pessoa() = default; //Construtor padrão
         // Construtor
-        Pessoa(std::string cpf, std::string nome, Date dataDeNascimento) : cpf(cpf), nome(nome), dataDeNascimento(dataDeNascimento) {}
+        Pessoa(std::string cpf, std::string nome, Date dataDeNascimento, std::string cidade) : cpf(cpf), nome(nome), dataDeNascimento(dataDeNascimento), cidade(cidade) {}
 
         // Getters e Setters
         std::string& getCpf() { return this->cpf; } // Retorna o CPF do objeto Pessoa
@@ -24,6 +25,8 @@ class Pessoa {
         void setNome(std::string novoNome) { this->nome = novoNome; } // Altera o nome do objeto Pessoa
         Date& getDataDeNascimento() { return this->dataDeNascimento; } // Retorna a data de nascimento do objeto Pessoa
         void setDataDeNascimento(Date novaData) { this->dataDeNascimento = novaData; } // Altera a data de nascimento do objeto Pessoa
+        std::string& getCidade() { return this->cidade; } // Retorna a cidade do objeto Pessoa
+        void setCidade(std::string novaCidade) { this->cidade = novaCidade; } // Altera a cidade do objeto Pessoa
 
 };
 

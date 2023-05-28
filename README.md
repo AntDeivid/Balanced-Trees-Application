@@ -33,19 +33,26 @@ O programa "Balanced-Trees-Application" é um aplicativo de linha de comando que
    - `data`: Pesquisa pessoas na árvore por um intervalo de datas de nascimento.
    - `exit`: Encerra o programa.
 
+---
+
 **Exemplos de Uso**
 - Para pesquisar uma pessoa pelo CPF, digite `cpf` e siga as instruções para inserir o CPF desejado.
 - Para pesquisar uma pessoa pelo nome, digite `nome` e siga as instruções para inserir o nome - ou prefixo - desejado.
 - Para pesquisar pessoas por um intervalo de datas de nascimento, digite `data` e siga as instruções para inserir a data inicial e a data final.
 - Para encerrar o programa, digite `exit`.
 
+---
+
 **Observações Para o Usuário**
 - Certifique-se de que o arquivo `data.csv` esteja presente no mesmo diretório do programa executável.
 - Caso queira mudar os dados do arquivo, adicionar ou mesmo colocar um outro arquivos, certifique-se de fornecer os dados no formato correto no arquivo `data.csv` (CPF, Nome, Sobrenome, Data, Cidade), separados por vírgulas.
+
+---
 
 **Observações Acerca da Implementação**
 - O programa conta com as classes `AVLTree.h` (implementação da árvore), `Node.h` (nó da árvore), `Pessoa.h` (representa uma pessoa e seus atributos) e `Data.h` (Data e seus atributos), afim de facilitar o funcionamento e implementação do programa.
 - Os dados do arquivo são lidos e armazenados em objetos Pessoa, enquanto todos estes objetos são armazenados em um vector. Todos os dados estão armazenados nos objetos do vector, nem um atributo sequer foi duplicado.
 - No nó é armazenado um ponteiro tipo T (nome, cpf ou data de nascimento) como chave. O balanceamento é feito por essa chave. O valor da chave é obtido dereferenciando o ponteiro, os demais atributos são obtidos a partir dos métodos getter da classe Pessoa, a partir do ponteiro para o objeto do nó.
+
 
 **Agora você pode compilar e executar o programa "Balanced-Trees-Application" para interagir com a árvore AVL e realizar pesquisas com base nos dados fornecidos. Divirta-se!**

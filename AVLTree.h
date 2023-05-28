@@ -299,12 +299,14 @@ private:
             std::cout << "Nome: " << *(node->key) << std::endl;
             std::cout << "CPF: " << node->pessoa->getCpf() << std::endl;
             std::cout << "Data de nascimento: " << node->pessoa->getDataDeNascimento() << std::endl;
+            std::cout << "Cidade: " << node->pessoa->getCidade() << std::endl;
             if (node->sameKey.size() > 0) { // se existirem nós com a mesma chave
                 for (int i = 0; i < node->sameKey.size(); i++) {
                     std::cout << "=====================================================================" << std::endl;
                     std::cout << "Nome: " << node->sameKey[i]->getNome() << std::endl;
                     std::cout << "CPF: " << node->sameKey[i]->getCpf() << std::endl;
                     std::cout << "Data de nascimento: " << node->sameKey[i]->getDataDeNascimento() << std::endl;
+                    std::cout << "Cidade: " << node->sameKey[i]->getCidade() << std::endl;
                 }
             }
         }
@@ -315,12 +317,14 @@ private:
             std::cout << "Nome: " << node->pessoa->getNome() << std::endl;
             std::cout << "CPF: " << *(node->key) << std::endl;
             std::cout << "Data de nascimento: " << node->pessoa->getDataDeNascimento() << std::endl;
+            std::cout << "Cidade: " << node->pessoa->getCidade() << std::endl;
             if (node->sameKey.size() > 0) { // se existirem nós com a mesma chave
                 for (int i = 0; i < node->sameKey.size(); i++) {
                     std::cout << "=====================================================================" << std::endl;
                     std::cout << "Nome: " << node->sameKey[i]->getNome() << std::endl;
                     std::cout << "CPF: " << node->sameKey[i]->getCpf() << std::endl;
                     std::cout << "Data de nascimento: " << node->sameKey[i]->getDataDeNascimento() << std::endl;
+                    std::cout << "Cidade: " << node->sameKey[i]->getCidade() << std::endl;
                 }
             }
         }
@@ -331,12 +335,14 @@ private:
             std::cout << "Nome: " << node->pessoa->getNome() << std::endl;
             std::cout << "CPF: " << node->pessoa->getCpf() << std::endl;
             std::cout << "Data de nascimento: " << *(node->key) << std::endl;
+            std::cout << "Cidade: " << node->pessoa->getCidade() << std::endl;
             if (node->sameKey.size() > 0) { // se existirem nós com a mesma chave
                 for (int i = 0; i < node->sameKey.size(); i++) {
                     std::cout << "=====================================================================" << std::endl;
                     std::cout << "Nome: " << node->sameKey[i]->getNome() << std::endl;
                     std::cout << "CPF: " << node->sameKey[i]->getCpf() << std::endl;
                     std::cout << "Data de nascimento: " << node->sameKey[i]->getDataDeNascimento() << std::endl;
+                    std::cout << "Cidade: " << node->sameKey[i]->getCidade() << std::endl;
                 }
             }
         }
@@ -404,9 +410,8 @@ private:
     void searchByBirthDate(Node<T> *node, T& initialDate, T& endDate) {
 
         Node<T> *currentNode = node;
-        if (node == nullptr || *(currentNode->key) > endDate) {
-            return; 
-        }
+        if (node == nullptr || *(currentNode->key) > endDate) { return; }
+
         // Aqui, deve ser verificado de o maior elemento da subárvore à esquerda é 
         // maior ou igual à data inicial, se for, então deve ser procurado à esquerda
         if (currentNode->left != nullptr && *(max(currentNode->left)->key) >= initialDate) {
@@ -415,9 +420,8 @@ private:
 
         // Aqui, deve ser verificado se a data do nó atual está entre as datas inicial e final
         // se estiver, então deve ser printado
-        if (*(currentNode->key) >= initialDate && *(currentNode->key) <= endDate) {
-            print(currentNode, 3);
-        }
+        if (*(currentNode->key) >= initialDate && *(currentNode->key) <= endDate) { print(currentNode, 3); }
+        
         // Aqui, deve ser verificado de o menor elemento da subárvore à direita é
         // menor ou igual à data final, se for, então deve ser procurado à direita
         if (currentNode->right != nullptr && *(min(currentNode->right)->key) <= endDate) {
