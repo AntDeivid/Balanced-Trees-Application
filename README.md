@@ -1,4 +1,4 @@
-# Balanced-Trees-Application
+## Balanced-Trees-Application
 Primeiro projeto da cadeira de Estrutura de Dados Avançada, que consiste em utilizar uma árvore balanceada (AVL, no caso) em uma aplicação de consulta de dados.
 
 **Instruções de Uso - Programa de Árvore AVL**
@@ -13,6 +13,7 @@ O programa "Balanced-Trees-Application" é um aplicativo de linha de comando que
 1. Abra um terminal ou prompt de comando.
 2. Navegue até o diretório onde você salvou os arquivos mencionados.
 3. Execute o seguinte comando para compilar o programa (usando o GCC como exemplo):
+
    ```
    g++ Balanced-Trees-Application.cpp -o Consulta
    ```
@@ -20,11 +21,13 @@ O programa "Balanced-Trees-Application" é um aplicativo de linha de comando que
 
 **Passo 3: Execução**
 1. Após a conclusão da compilação, execute o programa com o seguinte comando:
+
    ```
    ./Consulta
    ```
 2. O programa será iniciado e você verá um prompt solicitando que você digite um comando.
 3. Os comandos disponíveis são:
+
    - `cpf`: Pesquisa uma pessoa na árvore pelo CPF.
    - `nome`: Pesquisa uma pessoa na árvore pelo nome (Este nome pode ser um prefixo, daí todas as pessoas que tenham nome inciado com este prefixo serão exibidas).
    - `data`: Pesquisa pessoas na árvore por um intervalo de datas de nascimento.
